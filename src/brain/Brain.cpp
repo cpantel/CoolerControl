@@ -135,7 +135,7 @@ int Brain::getDeltaSpeed() {
         +--------+-------+--------+-------+-------+
         | > 255  |  255  |   255  |  255  |  255  |
         +--------+-------+--------+-------+-------+
-new     | > min  |  new  |   new  |  255  |  255  |
+new     | > min  |  new  |   new  |  127  |  127  |
 speed   +--------+-------+--------+-------+-------+
 unfixed | == min |  new  |   new  |   0   |   0   |
         +--------+-------+--------+-------+-------+
@@ -148,7 +148,7 @@ unfixed | == min |  new  |   new  |   0   |   0   |
         +--------+-------+--------+--------+
         | > 255  |  255  |   255  |   255  |
         +--------+-------+--------+--------+
-new     | > min  |  new  |   new  |   255  |
+new     | > min  |  new  |   new  |   127  |
 speed   +--------+-------+--------+--------+
 unfixed | <= min |  min  |   min  |    0   |
         +--------+-------+--------+--------+
@@ -163,7 +163,7 @@ byte Brain::getNewSpeed(byte speed) {
   if (newSpeed < ( minSpeed - decrement_1 ) ) {
 
     if (speed == 0 && newSpeed > ( minSpeed - increment_3 ) ) {
-      newSpeed = 255;
+      newSpeed = 127;
     } else if (speed <= minSpeed ) {
       newSpeed = 0;
     }
