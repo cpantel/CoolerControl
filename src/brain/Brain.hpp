@@ -22,9 +22,11 @@ class Brain {
     Brain() {};
 
     Brain(
-        byte weight_1, byte weight_2,
+        byte weight_1,
+        byte weight_2,
         byte scale,
-        byte ref_1, byte ref_2,
+        byte ref_1,
+        byte ref_2,
         byte minSpeed,
         byte delta_eq,
         byte decrement_2,
@@ -34,9 +36,11 @@ class Brain {
         byte increment_2,
         byte increment_3
     ):
-        weight_1(weight_1),weight_2(weight_2),
+        weight_1(weight_1),
+        weight_2(weight_2),
         scale(scale),
-        ref_1(ref_1),ref_2(ref_2),
+        ref_1(ref_1),
+        ref_2(ref_2),
         minSpeed(minSpeed),
         delta_eq(delta_eq),
         decrement_2(decrement_2),

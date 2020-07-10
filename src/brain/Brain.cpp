@@ -53,12 +53,16 @@ int Brain::getDeltaSpeed() {
   int delta = ( measurements[0].temp_1 + measurements[0].temp_2 - ref_1 - ref_2 ) / 2;
   int tendency = getTendency();
 /*
+ * #ifdef UNIT_TEST
+
   cout << endl << "  Last     : " << (unsigned) measurements[0].temp_1 << endl;
   cout << "  Last     : " << (unsigned) measurements[0].temp_2 << endl;
   cout << "  Ref      : " << (unsigned) ref_1 << endl;
   cout << "  Ref      : " << (unsigned) ref_2 << endl;
   cout << "  Delta    : " << delta << endl;
   cout << "  Tendency : " << tendency << endl;
+
+  #endif
 */
 
   if ( delta >= delta_eq ) {
@@ -124,14 +128,50 @@ int Brain::getDeltaSpeed() {
   }
 }
 
+/*
+                              old speed
+                 +-------+--------+-------+-------+
+                 | > min | == min | == 0  | < min |
+        +--------+-------+--------+-------+-------+
+        | > 255  |  255  |   255  |  255  |  255  |
+        +--------+-------+--------+-------+-------+
+new     | > min  |  new  |   new  |  255  |  255  |
+speed   +--------+-------+--------+-------+-------+
+unfixed | == min |  new  |   new  |   0   |   0   |
+        +--------+-------+--------+-------+-------+
+        | < min  |  min  |   min  |   0   |   0   |
+        +--------+-------+--------+-------+-------+
+
+                         old speed
+                 +-------+--------+--------+
+                 | > min | == min | <= min |
+        +--------+-------+--------+--------+
+        | > 255  |  255  |   255  |   255  |
+        +--------+-------+--------+--------+
+new     | > min  |  new  |   new  |   255  |
+speed   +--------+-------+--------+--------+
+unfixed | <= min |  min  |   min  |    0   |
+        +--------+-------+--------+--------+
+
+
+*/
 
 byte Brain::getNewSpeed(byte speed) {
   int delta = getDeltaSpeed();
   int newSpeed = speed + delta;
-  //cout << "peed + delta : " << (unsigned) speed << " + " << delta << " = " << newSpeed << " => ";
-  if (newSpeed < minSpeed) newSpeed = minSpeed;
-  if (newSpeed > 255 ) newSpeed = 255;
-  //cout << newSpeed  << endl;
+  // cout << endl << "speed + delta = newspeed " << (unsigned) speed << " + " << delta << " = " << newSpeed << " => ";
+  if (newSpeed < ( minSpeed - decrement_1 ) ) {
+
+    if (speed == 0 && newSpeed > ( minSpeed - increment_3 ) ) {
+      newSpeed = 255;
+    } else if (speed <= minSpeed ) {
+      newSpeed = 0;
+    }
+  } else {
+      if (newSpeed < minSpeed)  newSpeed = minSpeed;
+      else if (newSpeed > 255 ) newSpeed = 255;
+  }
+
   return (byte) newSpeed;
 }
 

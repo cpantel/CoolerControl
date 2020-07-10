@@ -155,7 +155,6 @@ void downloadConfig(Config *configToShow) {
         Serial.print(configToShow->min_interval);
         Serial.print(" ");
         Serial.print(configToShow->sample_interval);
-
 }
 
 void showConfig(Config *configToShow) {
@@ -193,7 +192,7 @@ void showConfig(Config *configToShow) {
 }
 
 void showStatus() {
-  //        Serial.print("Internal Temp                  : ");
+//        Serial.print("Internal Temp                  : ");
 //        Serial.println(temperature0);
         Serial.print(F("External 1 Temperature/Humidity: "));
         Serial.print(temperature1);
@@ -292,7 +291,7 @@ void loop() {
         Serial.println(F("u   upload config values"));
         Serial.println(F("d   download config values"));
         Serial.println(F("r   reset config to EEPROM values"));
-        Serial.println(F("s   show EEPROM parameteres"));
+        Serial.println(F("s   show EEPROM parameteres (NOT IMPLEMENTED)"));
         Serial.println(F("w   write EEPROMpwm speed to eeprom"));
         Serial.println(F("m   this menu"));
         Serial.println();
@@ -343,6 +342,7 @@ void loop() {
          inputConfig.min_interval    = Serial.parseInt();
          inputConfig.sample_interval = Serial.parseInt();
          if (inputConfig.signature == storedConfig.signature ) {
+           if (inputConfig.sample_interval < 5000 ) inputConfig.sample_interval = 5000;
            Serial.println(F("New configuration: "));
            storedConfig = inputConfig;
            showConfig(&storedConfig); 
@@ -356,9 +356,7 @@ void loop() {
         Serial.print(F("mi no entender: "));
         Serial.println(data);
       break;
-                   
-
     }
-    Serial.print("> ");
+    Serial.println("> ");
   }
 }

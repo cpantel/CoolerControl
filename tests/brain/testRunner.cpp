@@ -316,6 +316,40 @@ TEST(dummy, simulacion_newSpeed_cero_es_menos_uno) {
    CHECK_EQUAL(238,brain.getNewSpeed(239 ));
 }
 
+TEST(dummy, turn_off_cooler) {
+   Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
+   brain.addMeasure(20,20);
+   brain.addMeasure(10,10);
+   CHECK_EQUAL(0,brain.getNewSpeed(brain.getMinSpeed() ));
+}
+
+TEST(dummy, keep_cooler_off) {
+   Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
+   brain.addMeasure(20,20);
+   CHECK_EQUAL(0,brain.getNewSpeed( 0 ));
+   brain.addMeasure(30,30);
+   CHECK_EQUAL(0,brain.getNewSpeed( 0 ));
+}
+
+TEST(dummy, turn_on_cooler_if_necessary) {
+   Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
+   brain.addMeasure(50,50);
+   brain.addMeasure(60,60);
+   CHECK_EQUAL(255,brain.getNewSpeed( 0 ));
+   brain.addMeasure(40,40);
+   brain.addMeasure(40,40);
+   brain.addMeasure(30,30);
+   CHECK_EQUAL(235,brain.getNewSpeed(255) );
+}
+
+
+
+
+
+
+
+
+
 // Velocidad = v( Tr0, Tr1, Tr2, Ts0, Ts1, Ts2,  Tendencia)
 
 // Tendencia = t (Ts0, Ts1,Ts2, Ts0-1, Ts1-1, Ts2-1, TsX-n, Ts2-n, ....)
