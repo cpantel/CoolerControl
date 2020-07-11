@@ -19,8 +19,7 @@ void Config::writeToEEPROM() {
 }
 
 void Config::downloadToCLI() {
-  Serial.print(signature);
-  Serial.print(" ");
+  Serial.println();
   Serial.print(temp_ref_1);
   Serial.print(" ");
   Serial.print(temp_ref_2);
@@ -48,6 +47,8 @@ void Config::downloadToCLI() {
   Serial.print(delta_eq);
   Serial.print(" ");
   Serial.print(sample_interval);
+  Serial.print(" ");
+  Serial.print(signature);
   Serial.println();
 }
 
@@ -75,8 +76,6 @@ bool Config::readFromEEPROM() {
 }
 
 void Config::show() {
-  Serial.print(F("signature       : "));
-  Serial.println(signature);
   Serial.print(F("temp_ref_1      : "));
   Serial.println(temp_ref_1);
   Serial.print(F("temp_ref_2      : "));
@@ -105,18 +104,19 @@ void Config::show() {
   Serial.println(delta_eq);
   Serial.print(F("sample_interval : "));
   Serial.println(sample_interval);
+  Serial.print(F("signature       : "));
+  Serial.println(signature);
   Serial.println();
 }
 bool Config::uploadFromCLI(){
-  Config inputConfig;
-  unsigned int new_signature       = Serial.parseInt();
+  
   unsigned int new_temp_ref_1      = Serial.parseInt();
   unsigned int new_temp_ref_2      = Serial.parseInt();
   unsigned int new_weight_1        = Serial.parseInt();
   unsigned int new_weight_2        = Serial.parseInt();
   unsigned int new_decrement_2     = Serial.parseInt();
   unsigned int new_decrement_1     = Serial.parseInt();
-  unsigned int new_decrement_0           = Serial.parseInt();
+  unsigned int new_decrement_0     = Serial.parseInt();
   unsigned int new_increment_1     = Serial.parseInt();
   unsigned int new_increment_2     = Serial.parseInt();
   unsigned int new_increment_3     = Serial.parseInt();
@@ -124,10 +124,11 @@ bool Config::uploadFromCLI(){
   unsigned int new_scale           = Serial.parseInt();
   unsigned int new_delta_eq        = Serial.parseInt();
   unsigned int new_sample_interval = Serial.parseInt();
-
-  if (inputConfig.signature == signature ) {
-    if (inputConfig.sample_interval >= 5000 ) {
-      sample_interval = inputConfig.sample_interval;
+  unsigned int new_signature       = Serial.parseInt();
+  
+  if (new_signature == signature ) {
+    if (new_sample_interval < 5000 ) {
+      new_sample_interval = 5000;
     }
     temp_ref_1      = new_temp_ref_1;
     temp_ref_2      = new_temp_ref_2;

@@ -47,7 +47,7 @@ void setup() {
   Serial.setTimeout(30000);
   Serial.println();
   Serial.println();
-  Serial.println(F("Cooler controller v1.0"));
+  Serial.println(F("Cooler controller v0.2 alpha"));
   Serial.println(F("Half speed"));
   
   analogWrite(pwm, halfSpeed);
