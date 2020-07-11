@@ -50,7 +50,7 @@ void Brain:: init(
 
 
 int Brain::getDeltaSpeed() {
-  int delta = ( measurements[0].temp_1 + measurements[0].temp_2 - ref_1 - ref_2 ) / 2;
+  int delta    = ( measurements[0].temp_1 + measurements[0].temp_2 - ref_1 - ref_2 ) / 2;
   int tendency = getTendency();
 /*
  * #ifdef UNIT_TEST
@@ -157,22 +157,45 @@ unfixed | <= min |  min  |   min  |    0   |
 */
 
 byte Brain::getNewSpeed(byte speed) {
-  int delta = getDeltaSpeed();
+  int delta    = getDeltaSpeed();
   int newSpeed = speed + delta;
-  // cout << endl << "speed + delta = newspeed " << (unsigned) speed << " + " << delta << " = " << newSpeed << " => ";
-  if (newSpeed < ( minSpeed - decrement_1 ) ) {
+  int result;
 
-    if (speed == 0 && newSpeed > ( minSpeed - increment_3 ) ) {
-      newSpeed = 127;
-    } else if (speed <= minSpeed ) {
-      newSpeed = 0;
+  if ( speed == 0) {
+    if (delta > 0 ) {
+      result = 127;                   // turn_on_cooler_if_needed
+    } else {
+      result = 0;                     // keep_cooler_off
+    }
+
+  } else if ( speed <= minSpeed ) {
+    if ( delta > 0 ) {
+      result = newSpeed;
+      offCounter = 0;
+    } else {
+      if (offCounter >= 10 ) {
+        result = 0;                   // turn_off_cooler
+        offCounter = 0;
+      } else {
+        ++offCounter;
+        result = minSpeed;
+      }
     }
   } else {
-      if (newSpeed < minSpeed)  newSpeed = minSpeed;
-      else if (newSpeed > 255 ) newSpeed = 255;
+    result = newSpeed;
+    if (result > 255) {
+      result = 255;
+    }
+    if (result < minSpeed) {
+      result = minSpeed;
+    }
+
   }
 
-  return (byte) newSpeed;
+  if (result > 255) {
+    result = 255;
+  }
+  return (byte) result;
 }
 
 byte Brain::getMinSpeed() {

@@ -95,7 +95,7 @@ class Brain {
     byte increment_2;
     byte increment_3;
 
-
+    byte offCounter;
     bool firstTime = 1;
     Node measurements[LEN];
 };

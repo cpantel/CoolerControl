@@ -28,8 +28,8 @@ float temperature2;
 
 struct Config {
   byte         signature       = 0x13;
-  byte         temp_ref_1      = 25;
-  byte         temp_ref_2      = 25;
+  byte         temp_ref_1      = 22;
+  byte         temp_ref_2      = 22;
   byte         weight_1        = 5;
   byte         weight_2        = 5;
   byte         decrement_2     = 20;
@@ -38,7 +38,7 @@ struct Config {
   byte         increment_1     = 10;
   byte         increment_2     = 20;
   byte         increment_3     = 50;
-  byte         min_speed       = 62;
+  byte         min_speed       = 84;
   byte         scale           = 1;
   byte         delta_eq        = 2;
   byte         history_length  = 5;
@@ -222,6 +222,8 @@ void loop() {
     brain.addMeasure(temperature1,temperature2);
 
     pwmSpeed = brain.getNewSpeed(pwmSpeed);
+    analogWrite(pwm, pwmSpeed); 
+
     showStatus();    
   } else if(Serial.available() > 0){
     data = Serial.read();
@@ -326,6 +328,8 @@ void loop() {
          showConfig(&storedConfig); 
          downloadConfig(&storedConfig); 
          Serial.println();
+       //  19 40 40 5 5 20 10 1 10 20 50 84 2 5 1000 10000
+       //  19 17 17 5 5 20 10 1 10 20 50 84 2 5 1000 5000
          inputConfig.signature       = Serial.parseInt();
          inputConfig.temp_ref_1      = Serial.parseInt();
          inputConfig.temp_ref_2      = Serial.parseInt();
@@ -346,6 +350,21 @@ void loop() {
            Serial.println(F("New configuration: "));
            storedConfig = inputConfig;
            showConfig(&storedConfig); 
+           brain.init(
+             storedConfig.weight_1,
+             storedConfig.weight_2,
+             storedConfig.scale,
+             storedConfig.temp_ref_1,
+             storedConfig.temp_ref_2,
+             storedConfig.min_speed,
+             storedConfig.delta_eq,
+             storedConfig.decrement_2,
+             storedConfig.decrement_2,
+             storedConfig.equal,
+             storedConfig.increment_1,
+             storedConfig.increment_2,
+             storedConfig.increment_3
+           );           
          } else {
            Serial.println(F("Bad signature"));
          }

@@ -9,6 +9,32 @@ TEST_GROUP(brain) {
   }
 };
 
+TEST_GROUP(powerOff) {
+  void setup() {
+  }
+
+  void teardown() {
+
+  }
+};
+
+TEST_GROUP(simulation) {
+  void setup() {
+  }
+
+  void teardown() {
+
+  }
+};
+
+TEST_GROUP(newTest) {
+  void setup() {
+  }
+
+  void teardown() {
+
+  }
+};
 
 TEST(brain,setFirstMeasure) {
    Brain brain(1,1,1,17,17,64,2,20,10,0,10,20,50);
@@ -231,7 +257,14 @@ TEST(brain,newSpeed_respeta_maximo) {
    CHECK_EQUAL(255,brain.getNewSpeed(255 ));
 }
 
-TEST(brain, simulacion_newSpeed_cero_es_cero) {
+
+TEST(newTest, turn_off_cooler) {
+   Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
+   brain.addMeasure(30,30);
+   CHECK_EQUAL(brain.getMinSpeed(),brain.getNewSpeed(brain.getMinSpeed() + 5 ));
+}
+
+TEST(simulation, simulacion_newSpeed_cero_es_cero) {
    Brain brain(1,1,1,40,40,64,2,20,10,0,10,20,50);
    brain.addMeasure(20,20);
    CHECK_EQUAL(117,brain.getNewSpeed(127 ));
@@ -274,7 +307,7 @@ TEST(brain, simulacion_newSpeed_cero_es_cero) {
 }
 
 
-TEST(brain, simulacion_newSpeed_cero_es_menos_uno) {
+TEST(simulation, simulacion_newSpeed_cero_es_menos_uno) {
    Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
    brain.addMeasure(20,20);
    CHECK_EQUAL(117,brain.getNewSpeed(127 ));
@@ -316,22 +349,32 @@ TEST(brain, simulacion_newSpeed_cero_es_menos_uno) {
    CHECK_EQUAL(238,brain.getNewSpeed(239 ));
 }
 
-TEST(brain, turn_off_cooler) {
+TEST(powerOff, turn_off_cooler) {
    Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
    brain.addMeasure(20,20);
-   brain.addMeasure(10,10);
-   CHECK_EQUAL(0,brain.getNewSpeed(brain.getMinSpeed() ));
+   byte minSpeed = brain.getMinSpeed();
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(minSpeed,brain.getNewSpeed(minSpeed));
+   CHECK_EQUAL(0,brain.getNewSpeed(minSpeed));
 }
 
-TEST(brain, keep_cooler_off) {
+TEST(powerOff, keep_cooler_off) {
    Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
    brain.addMeasure(20,20);
    CHECK_EQUAL(0,brain.getNewSpeed( 0 ));
-   brain.addMeasure(30,30);
+   brain.addMeasure(20,20);
    CHECK_EQUAL(0,brain.getNewSpeed( 0 ));
 }
 
-TEST(brain, turn_on_cooler_if_necessary) {
+TEST(powerOff, turn_on_cooler_if_needed) {
    Brain brain(1,1,1,40,40,64,2,20,10,1,10,20,50);
    brain.addMeasure(50,50);
    brain.addMeasure(60,60);
@@ -341,16 +384,4 @@ TEST(brain, turn_on_cooler_if_necessary) {
    brain.addMeasure(30,30);
    CHECK_EQUAL(107,brain.getNewSpeed(127) );
 }
-
-
-
-
-
-
-
-
-
-// Velocidad = v( Tr0, Tr1, Tr2, Ts0, Ts1, Ts2,  Tendencia)
-
-// Tendencia = t (Ts0, Ts1,Ts2, Ts0-1, Ts1-1, Ts2-1, TsX-n, Ts2-n, ....)
 
