@@ -43,7 +43,7 @@ void internalTempInit() {
 
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(19200);
   Serial.setTimeout(30000);
   Serial.println();
   Serial.println();
@@ -52,7 +52,7 @@ void setup() {
   
   analogWrite(pwm, halfSpeed);
 
-  internalTempInit();
+  // internalTempInit();
 
   delay(1000);
   Serial.println("Full speed");
@@ -164,11 +164,11 @@ void loop() {
 
       case '0':
         Serial.println(F("Internal temperature not calibrated, not used"));
-        ADCSRA |= (1<<ADSC);
-        while ((ADCSRA & (1<<ADSC)) != 0)
-        temperature0 = (ADC - 247)/1.22;
-        Serial.print(F("Internal Temp: "));
-        Serial.println(temperature0);
+        //ADCSRA |= (1<<ADSC);
+        //while ((ADCSRA & (1<<ADSC)) != 0)
+        //temperature0 = (ADC - 247)/1.22;
+        //Serial.print(F("Internal Temp: "));
+        //Serial.println(temperature0);
       break;
 
       case '1':
