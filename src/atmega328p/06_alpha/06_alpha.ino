@@ -230,7 +230,7 @@ void loop() {
         Serial.println(F("d   download config values"));
         Serial.println(F("r   reset config to EEPROM values"));
         Serial.println(F("s   show EEPROM parameteres (NOT IMPLEMENTED)"));
-        Serial.println(F("w   write EEPROMpwm speed to eeprom"));
+        Serial.println(F("w   write config to EEPROM"));
         Serial.println(F("m   this menu"));
         Serial.println();
       break;
