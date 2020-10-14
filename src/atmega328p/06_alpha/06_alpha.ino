@@ -47,7 +47,7 @@ void setup() {
   Serial.setTimeout(30000);
   Serial.println();
   Serial.println();
-  Serial.println(F("Cooler controller v0.2 alpha"));
+  Serial.println(F("Cooler controller v0.3 alpha"));
   Serial.println(F("Half speed"));
   
   analogWrite(pwm, halfSpeed);
@@ -108,6 +108,25 @@ void showCSV(){
   Serial.println();
 }
 
+
+void showJSON(){
+  
+  Serial.print(F("{ \"T1\" : \""));  
+  Serial.print(temperature1);
+  Serial.print(F("\", \"H1\" : \""));
+  Serial.print(humidity1);
+  Serial.print(F("\", \"T2\" : \""));
+  Serial.print(temperature2);
+  Serial.print(F("\", \"H2\" : \""));
+  Serial.print(humidity2);
+  Serial.print(F("\", \"CS\" : \""));
+  Serial.print(byte(pwmSpeed));
+  Serial.print(F("\", "));
+  conf.showJSON();
+
+  Serial.println("}");
+}
+
 void showStatus() {
 //  Serial.print("Internal Temp            : ");
 //        Serial.println(temperature0);
@@ -141,7 +160,7 @@ void loop() {
     pwmSpeed = brain.getNewSpeed(pwmSpeed);
     analogWrite(pwm, pwmSpeed); 
 
-    showCSV();    
+    showJSON();    
   } else if(Serial.available() > 0){
     data = Serial.read();
     Serial.print("> ");

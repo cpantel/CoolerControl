@@ -75,6 +75,41 @@ bool Config::readFromEEPROM() {
   return false;
 }
 
+void Config::showJSON() {
+  Serial.print(F(" \"R1\" : \""));
+  Serial.print(temp_ref_1);
+  Serial.print(F("\", \"R2\" : \""));
+  Serial.print(temp_ref_2);
+  Serial.print(F("\", \"W1\" : \""));
+  Serial.print(weight_1);
+  Serial.print(F("\", \"W2\" : \""));
+  Serial.print(weight_2);
+  Serial.print(F("\", \"D2\" : \""));
+  Serial.print(decrement_2);
+  Serial.print(F("\", \"D1\" : \""));
+  Serial.print(decrement_1);
+  Serial.print(F("\", \"D0\" : \""));
+  Serial.print(decrement_0);
+  Serial.print(F("\", \"I1\" : \""));
+  Serial.print(increment_1);
+  Serial.print(F("\", \"I2\" : \""));
+  Serial.print(increment_2);
+  Serial.print(F("\", \"I3\" : \""));
+  Serial.print(increment_3);
+  Serial.print(F("\", \"MS\" : \""));
+  Serial.print(min_speed);
+  Serial.print(F("\", \"SC\" : \""));
+  Serial.print(scale);
+  Serial.print(F("\", \"DE\" : \""));
+  Serial.print(delta_eq);
+  Serial.print(F("\", \"SI\" : \""));
+  Serial.print(sample_interval);
+  Serial.print(F("\""));
+
+  
+}
+
+
 void Config::show() {
   Serial.print(F("temp_ref_1      : "));
   Serial.println(temp_ref_1);

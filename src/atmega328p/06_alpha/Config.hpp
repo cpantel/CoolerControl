@@ -13,14 +13,15 @@
 class Config {
   public:
     void show();
+    void showJSON();
     bool readFromEEPROM();
     void writeToEEPROM();
     void downloadToCLI();
     bool uploadFromCLI();
 
     byte         signature       = 0x14;
-    byte         temp_ref_1      = 25;
-    byte         temp_ref_2      = 25;
+    byte         temp_ref_1      = 35;
+    byte         temp_ref_2      = 35;
     byte         weight_1        = 5;
     byte         weight_2        = 5;
     byte         decrement_2     = 20;
