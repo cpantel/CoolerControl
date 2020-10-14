@@ -121,7 +121,7 @@ void showJSON(){
   Serial.print(humidity2);
   Serial.print(F("\", \"CS\" : \""));
   Serial.print(byte(pwmSpeed));
-  Serial.print(F("\", "));
+  Serial.print(F("\","));
   conf.showJSON();
 
   Serial.println("}");
